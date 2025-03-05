@@ -1,25 +1,49 @@
 import json
 def load_data(file_path):
   """ Loads a JSON file """
-  with open(file_path, "r") as handle:
+  with open(file_path, "r", encoding="utf-8") as handle:
     return json.load(handle)
 
 
-def print_animal_info(file_path):
-    """Reads and prints required animal information"""
-    animals_data = load_data(file_path)
+def generate_animal_info(data):
+    """Generates a formatted string for the animals' information."""
 
-    for animal in animals_data:
-        if "name" in animal:
-            print(f"Name: {animal['name']}")
-        if "characteristics" in animal:
-            print(f"Diet: {animal['characteristics']['diet']}")
-        if "locations" in animal and animal["locations"]:
-            print(f"Location: {animal['locations'][0]}")
-        if "characteristics" in animal:
-            print(f"Type: {animal['characteristics']['type']}")
+    output = ""
 
-        print()
+    for animal in data:
+        if 'name' not in animal or 'characteristics' not in animal or 'locations' not in animal:
+            continue  # Skip animals missing required fields
+
+        output += f"Name: {animal['name']}\n"
+
+        if 'diet' in animal['characteristics']:
+            output += f"Diet: {animal['characteristics']['diet']}\n"
+
+        if isinstance(animal['locations'], list) and animal['locations']:
+            output += f"Location: {animal['locations'][0]}\n"
+
+        if 'type' in animal['characteristics']:
+            output += f"Type: {animal['characteristics']['type']}\n"
+
+        output += " " * 30 + "\n"  # Separator for readability
+
+    return output
 
 
-print_animal_info("animals_data.json")
+
+def create_html_file(template_path, output_path, animals_info):
+    """ Generates an HTML file replacing the placeholder with the animal data """
+    with open(template_path, "r") as file:
+        html_content = file.read()
+
+    new_html_content = html_content.replace("__REPLACE_ANIMALS_INFO__", animals_info)
+
+    with open(output_path, "w") as file:
+        file.write(new_html_content)
+
+animals_data = load_data("animals_data.json")
+
+animals_info = generate_animal_info(animals_data)
+
+create_html_file("animals_template.html", "animals.html", animals_info)
+print(animals_info)
