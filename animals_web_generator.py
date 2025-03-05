@@ -14,19 +14,23 @@ def generate_animal_info(data):
         if 'name' not in animal or 'diet' not in animal['characteristics'] or 'type' not in animal['characteristics'] or 'locations' not in animal:
             continue  # Skip animals missing required fields
         output += '<li class="cards__item">'
+        output += '<div class="card__title">'
 
-        output += f"Name: {animal['name']}<br/>\n"
+
+        output += f" {animal['name']}</div>\n"
+        output += '<p class="card__text">'
 
         if 'diet' in animal['characteristics']:
-            output += f"Diet: {animal['characteristics']['diet']}<br/>\n"
+            output += f"<strong>Diet:</strong>{animal['characteristics']['diet']}<br/>\n"
 
         if isinstance(animal['locations'], list) and animal['locations']:
-            output += f"Location: {animal['locations'][0]}<br/>\n"
+            output += f"<strong>Location:</strong> {animal['locations'][0]}<br/>\n"
 
         if 'type' in animal['characteristics']:
-            output += f"Type: {animal['characteristics']['type']}<br/>\n"
+            output += f"<strong>Type:</strong> {animal['characteristics']['type']}<br/>\n"
 
         output += " " * 30 + "\n"  # Separator for readability
+        output += '</p>'
         output += '</li>'
 
     return output
