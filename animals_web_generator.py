@@ -11,7 +11,7 @@ def generate_animal_info(data):
     output = ""
 
     for animal in data:
-        if 'name' not in animal or 'characteristics' not in animal or 'locations' not in animal:
+        if 'name' not in animal or 'diet' not in animal['characteristics'] or 'type' not in animal['characteristics'] or 'locations' not in animal:
             continue  # Skip animals missing required fields
 
         output += f"Name: {animal['name']}\n"
