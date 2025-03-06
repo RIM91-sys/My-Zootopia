@@ -10,28 +10,38 @@ def generate_animal_info(data):
 
     output = ""
 
-    for animal in data:
-        if 'name' not in animal or 'diet' not in animal['characteristics'] or 'type' not in animal['characteristics'] or 'locations' not in animal:
+    for animal_obj in data:
+        if 'name' not in animal_obj or 'diet' not in animal_obj['characteristics'] or 'type' not in animal_obj[
+            'characteristics'] or 'locations' not in animal_obj:
             continue  # Skip animals missing required fields
-        output += '<li class="cards__item">'
-        output += '<div class="card__title">'
+        output += serialize_animal(animal_obj)
+    return output
 
 
-        output += f" {animal['name']}</div>\n"
-        output += '<p class="card__text">'
+def serialize_animal(animal_obj):
+    """ Handle a single animal serialization """
+    output = ""
 
-        if 'diet' in animal['characteristics']:
-            output += f"<strong>Diet:</strong>{animal['characteristics']['diet']}<br/>\n"
 
-        if isinstance(animal['locations'], list) and animal['locations']:
-            output += f"<strong>Location:</strong> {animal['locations'][0]}<br/>\n"
+    output += '<li class="cards__item">'
+    output += '<div class="card__title">'
 
-        if 'type' in animal['characteristics']:
-            output += f"<strong>Type:</strong> {animal['characteristics']['type']}<br/>\n"
 
-        output += " " * 30 + "\n"  # Separator for readability
-        output += '</p>'
-        output += '</li>'
+    output += f" {animal_obj['name']}</div>\n"
+    output += '<p class="card__text">'
+
+    if 'diet' in animal_obj['characteristics']:
+        output += f"<strong>Diet:</strong>{animal_obj['characteristics']['diet']}<br/>\n"
+
+    if isinstance(animal_obj['locations'], list) and animal_obj['locations']:
+       output += f"<strong>Location:</strong> {animal_obj['locations'][0]}<br/>\n"
+
+    if 'type' in animal_obj['characteristics']:
+        output += f"<strong>Type:</strong> {animal_obj['characteristics']['type']}<br/>\n"
+
+    output += " " * 30 + "\n"  # Separator for readability
+    output += '</p>'
+    output += '</li>'
 
     return output
 
