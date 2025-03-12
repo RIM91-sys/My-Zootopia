@@ -1,4 +1,6 @@
 import json
+
+
 def load_data(file_path):
   """ Loads a JSON file """
   with open(file_path, "r", encoding="utf-8") as handle:
@@ -7,9 +9,7 @@ def load_data(file_path):
 
 def generate_animal_info(data):
     """Generates a formatted string for the animals' information."""
-
     output = ""
-
     for animal_obj in data:
         if 'name' not in animal_obj or 'diet' not in animal_obj['characteristics'] or 'type' not in animal_obj[
             'characteristics'] or 'locations' not in animal_obj:
@@ -21,12 +21,8 @@ def generate_animal_info(data):
 def serialize_animal(animal_obj):
     """ Handle a single animal serialization """
     output = ""
-
-
     output += '<li class="cards__item">'
     output += '<div class="card__title">'
-
-
     output += f" {animal_obj['name']}</div>\n"
     output += '<p class="card__text">'
 
@@ -46,7 +42,6 @@ def serialize_animal(animal_obj):
     return output
 
 
-
 def create_html_file(template_path, output_path, animals_info):
     """ Generates an HTML file replacing the placeholder with the animal data """
     with open(template_path, "r") as file:
@@ -57,9 +52,20 @@ def create_html_file(template_path, output_path, animals_info):
     with open(output_path, "w") as file:
         file.write(new_html_content)
 
-animals_data = load_data("animals_data.json")
 
-animals_info = generate_animal_info(animals_data)
+def main():
+    """Main function to load data, generate HTML content, and create the output file."""
+    input_json = "animals_data.json"
+    template_html = "animals_template.html"
+    output_html = "animals.html"
 
-create_html_file("animals_template.html", "animals.html", animals_info)
-print(animals_info)
+    animals_data = load_data(input_json)
+    animals_info = generate_animal_info(animals_data)
+    create_html_file(template_html, output_html, animals_info)
+
+    # Debugging output
+    print(animals_info)
+
+
+if __name__ == "__main__":
+    main()
